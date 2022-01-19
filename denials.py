@@ -2,8 +2,10 @@
 # Copyright (C) 2020-2021 Giovix92
 
 import argparse
-import getopt, re
-import os, sys, shutil
+import re
+import os
+import sys
+import shutil
 
 
 version = "v1.4"
@@ -20,22 +22,23 @@ if os.path.exists("sepolicy"):
 
 if os.path.exists("denials.txt"):
     os.remove("denials.txt")
-    
+
 if os.path.exists("fixes.txt"):
     os.remove("fixes.txt")
 
+
 def gen_fix(string):
-    test = re.search("{",string)
-    test2 = re.search("}",string)
-    se_context = string[test.span()[0]:test2.span()[0]+1]
-    test = re.search("scontext",string)
+    test = re.search("{", string)
+    test2 = re.search("}", string)
+    se_context = string[test.span()[0]:test2.span()[0] + 1]
+    test = re.search("scontext", string)
     scontext = string[(test.span()[0]):].split(":")[2]
-    test = re.search("tcontext",string)
+    test = re.search("tcontext", string)
     tcontext = string[(test.span()[0]):].split(":")[2]
-    test = re.search("tclass",string)
+    test = re.search("tclass", string)
     tclass = string[(test.span()[0]):].split("=")[1].split(" ")[0]
     if scontext == tcontext:
-        tcontext="self"
+        tcontext = "self"
     fix = f"allow {scontext} {tcontext}:{tclass} {se_context};\n"
     if tclass == "binder" and "call" in se_context or "transfer" in se_context:
         fix = f"binder_call({scontext}, {tcontext})\n"
@@ -46,20 +49,23 @@ def gen_fix(string):
             fix = f"set_prop({scontext}, {tcontext})\n"
     return fix
 
-parser = argparse.ArgumentParser(description="Address your SELinux denials.", prog="denials.py")
+
+parser = argparse.ArgumentParser(
+    description="Address your SELinux denials.",
+    prog="denials.py")
 group = parser.add_mutually_exclusive_group()
 parser.add_argument("-c", "--cleanup", action='store_true',
-    help="Cleans up the working directory.")
+                    help="Cleans up the working directory.")
 group.add_argument("-d", "--dmesg", default="dmesg.txt", metavar="dmesg_name", nargs='?',
-    help="Uses a custom dmesg file instead of the dmesg.txt default file.")
+                   help="Uses a custom dmesg file instead of the dmesg.txt default file.")
 parser.add_argument("-i", "--interactive", action="store_true",
-    help="Interactive mode.")
+                    help="Interactive mode.")
 group.add_argument("-l", "--logcat", default="logcat.txt", metavar="logcat_name", nargs='?',
-    help="Uses a custom logcat file instead of the logcat.txt default file.")
-parser.add_argument("-s", "--sanitize",  action='store_true',
-    help="Sanitizes logcat file encoding")
+                   help="Uses a custom logcat file instead of the logcat.txt default file.")
+parser.add_argument("-s", "--sanitize", action='store_true',
+                    help="Sanitizes logcat file encoding")
 parser.add_argument("-v", "--verbose", action='store_true',
-    help="Enable verbose mode: outputs every denial into its respective file.")
+                    help="Enable verbose mode: outputs every denial into its respective file.")
 args = parser.parse_args()
 
 if args.cleanup:
@@ -79,7 +85,7 @@ if args.interactive:
         else:
             try:
                 print("Fix:", gen_fix(string).strip("\n"))
-            except:
+            except BaseException:
                 print("Invalid denial. Did you type it correctly?")
 
 
@@ -117,8 +123,8 @@ if args.sanitize:
     os.system('cat %s | grep "avc: denied" > denials.txt' % logname)
 
 if not os.path.isfile(inputfile):
-	print("Denials file is missing! Exiting.")
-	sys.exit()
+    print("Denials file is missing! Exiting.")
+    sys.exit()
 
 with open(inputfile) as denfile:
     data = denfile.read()
