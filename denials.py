@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright (C) 2019 baalajimaestro
 # Copyright (C) 2020-2021 Giovix92
 
