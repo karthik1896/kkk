@@ -17,6 +17,10 @@ Run into WSL/your preferred Linux terminal: `python3 denials.py`.
 - `-s` sanitizes log file encoding before processing it.
 - `-v` enables verbose mode. It'll output every denial into its respective file.
 
+Please, **do not address random things**. (see untrusted_apps, system_server...)
+
+If you need to do something like that, refer to the [LineageOS guide](https://lineageos.org/engineering/HowTo-SELinux/).
+
 ## Troubleshooting
 
 - If `-s` doesn't work, run `dos2unix` over your file to fix its encoding.
