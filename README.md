@@ -1,5 +1,7 @@
 # selinux-denial-fixer
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/64b12db392b2496bb1ac45a735ce1a75)](https://www.codacy.com/gh/Giovix92/selinux-denial-fixer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Giovix92/selinux-denial-fixer&amp;utm_campaign=Badge_Grade)
+
 Generate Fixes for your SELinux Denials.
 Updated with *love* by me.
 *Cuz I'm also a lazy noob trying to fix his broken enforcing build*.
