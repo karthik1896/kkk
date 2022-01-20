@@ -10,6 +10,7 @@ Updated with *love* by me.
 
 Run into WSL/your preferred Linux terminal: `python3 denials.py`.
 
+- `-1 denial` outputs only the fix for the inserted denial.
 - `-c` cleans up your working directory from unnecessary files.
 - `-d file` enables the dmesg parsing mode. Acts like logcat mode.
 - `-h` shows the help page.
