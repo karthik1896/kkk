@@ -1,0 +1,6 @@
+get_prop(untrusted_app, vendor_default_prop)
+get_prop(priv_app, vendor_default_prop)
+get_prop(permissioncontroller_app, vendor_default_prop)
+get_prop(hal_camera_default, default_prop)
+get_prop(untrusted_app, vendor_persist_camera_prop)
+allow untrusted_app zygote:unix_stream_socket { getopt };
